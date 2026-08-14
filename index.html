@@ -179,6 +179,46 @@ body.siteLocked{overflow:hidden}
   </div>
 </section>
 
+
+<section id="paidPanel" class="page">
+  <h2 class="title">PAID <span>PANEL</span></h2>
+  <div class="box" style="max-width:700px;margin:20px auto">
+    <h2>💰 Paid Panel</h2>
+    <p>Select a package and submit your payment proof.</p>
+
+    <div class="products" style="padding:18px 0">
+      <div class="box">
+        <h3>⭐ Basic</h3><p>Rs 199</p>
+        <button class="buy" onclick="selectPaid('Basic','Rs 199')">Select</button>
+      </div>
+      <div class="box">
+        <h3>🔥 Pro</h3><p>Rs 499</p>
+        <button class="buy" onclick="selectPaid('Pro','Rs 499')">Select</button>
+      </div>
+      <div class="box">
+        <h3>👑 Premium</h3><p>Rs 999</p>
+        <button class="buy" onclick="selectPaid('Premium','Rs 999')">Select</button>
+      </div>
+    </div>
+
+    <div id="paidOrder" style="display:none;margin-top:18px">
+      <h3 id="paidSelected"></h3>
+      <input id="paidPlayerId" placeholder="Player ID / Guild ID"
+        style="width:100%;padding:14px;margin:8px 0;border-radius:10px">
+      <p><b>JazzCash:</b> 03155192240</p>
+      <label>Transaction Screenshot</label>
+      <input id="paidProof" type="file" accept="image/*"
+        style="width:100%;padding:12px;margin:8px 0 14px">
+      <button class="buy" onclick="submitPaid()">Submit Payment Proof</button>
+    </div>
+
+    <div id="paidStatus" style="display:none;margin-top:18px;text-align:center">
+      <h3 id="paidStatusText">🟡 Pending</h3>
+      <p id="paidStatusNote">Payment proof submitted. Waiting for approval.</p>
+    </div>
+  </div>
+</section>
+
 <section id="payment" class="page">
 <h2 class="title">SELECT <span>PAYMENT</span></h2>
 <div class="box" style="margin:20px auto;max-width:620px">
@@ -783,6 +823,25 @@ function checkGuildStatus(){
     document.getElementById('ggStatusText').textContent=statuses[i][0];
     document.getElementById('ggStatusNote').textContent=statuses[i][1];
   },1500);
+}
+</script>
+
+<script>
+let paidPackage='', paidPrice='';
+function selectPaid(pkg,price){
+  paidPackage=pkg; paidPrice=price;
+  document.getElementById('paidOrder').style.display='block';
+  document.getElementById('paidSelected').textContent='💰 '+pkg+' — '+price;
+  document.getElementById('paidOrder').scrollIntoView({behavior:'smooth'});
+}
+function submitPaid(){
+  const id=document.getElementById('paidPlayerId').value.trim();
+  const proof=document.getElementById('paidProof').files[0];
+  if(!id){alert('Please enter Player ID / Guild ID.');return;}
+  if(!proof){alert('Please upload transaction screenshot.');return;}
+  document.getElementById('paidStatus').style.display='block';
+  document.getElementById('paidStatusText').textContent='🟡 Pending';
+  document.getElementById('paidStatusNote').textContent='Payment proof submitted. Waiting for approval.';
 }
 </script>
 </body>
