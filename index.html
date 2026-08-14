@@ -157,6 +157,28 @@ body.siteLocked{overflow:hidden}
   </div>
 </section>
 
+
+<section id="ggStatusTracker" class="page">
+  <h2 class="title">GUILD GLORY <span>STATUS</span></h2>
+  <div class="box" style="max-width:650px;margin:20px auto">
+    <h2>🏆 Request Status</h2>
+    <p>Enter your Guild ID to check the website request status.</p>
+    <input id="ggStatusGuildId" placeholder="Enter Guild ID"
+      style="width:100%;padding:14px;margin:8px 0 14px;border-radius:10px">
+    <button class="buy" onclick="checkGuildStatus()">Check Status</button>
+
+    <div id="ggStatusResult" style="display:none;margin-top:20px">
+      <h3 id="ggStatusText">🟡 Pending</h3>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0">
+        <span id="ggPending" style="padding:10px 14px;border-radius:10px;background:#6b5200">🟡 Pending</span>
+        <span id="ggApproved" style="padding:10px 14px;border-radius:10px;background:#193b70">🔵 Approved</span>
+        <span id="ggSuccessful" style="padding:10px 14px;border-radius:10px;background:#176b35">🟢 Successful</span>
+      </div>
+      <p id="ggStatusNote">Your request is waiting for approval.</p>
+    </div>
+  </div>
+</section>
+
 <section id="payment" class="page">
 <h2 class="title">SELECT <span>PAYMENT</span></h2>
 <div class="box" style="margin:20px auto;max-width:620px">
@@ -735,6 +757,33 @@ function ggNextServer(){const id=document.getElementById('ggGuildId').value.trim
 function ggNextUpload(){if(!document.getElementById('ggServer').value){alert('Please select a server.');return;}document.getElementById('ggStep2').style.display='none';document.getElementById('ggStep3').style.display='block';}
 function ggSubmit(){if(!document.getElementById('ggFile').files[0]){alert('Please choose a file.');return;}document.getElementById('ggStep3').style.display='none';document.getElementById('ggSuccess').style.display='block';}
 function ggReset(){document.getElementById('ggSuccess').style.display='none';document.getElementById('ggStep1').style.display='block';document.getElementById('ggGuildId').value='';document.getElementById('ggServer').value='';document.getElementById('ggFile').value='';}
+</script>
+
+<script>
+function checkGuildStatus(){
+  const id=document.getElementById('ggStatusGuildId').value.trim();
+  if(!id){alert('Please enter Guild ID.');return;}
+  const result=document.getElementById('ggStatusResult');
+  result.style.display='block';
+
+  // Demo website workflow: Pending -> Approved -> Successful.
+  const statuses=[
+    ['🟡 Pending','Your request is waiting for approval.'],
+    ['🔵 Approved','Your request has been approved.'],
+    ['🟢 Successful','Your request is marked successful.']
+  ];
+  let i=0;
+  document.getElementById('ggStatusText').textContent=statuses[i][0];
+  document.getElementById('ggStatusNote').textContent=statuses[i][1];
+
+  // Demo progression only; no game/server modification.
+  const timer=setInterval(()=>{
+    i++;
+    if(i>=statuses.length){clearInterval(timer);return;}
+    document.getElementById('ggStatusText').textContent=statuses[i][0];
+    document.getElementById('ggStatusNote').textContent=statuses[i][1];
+  },1500);
+}
 </script>
 </body>
 </html>
